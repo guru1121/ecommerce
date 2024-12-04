@@ -22,6 +22,7 @@ const client = new MongoClient(uri, {
   },
 });
 
+
 async function connectToDatabase() {
   try {
     // Connect to MongoDB
@@ -38,6 +39,10 @@ async function connectToDatabase() {
 
 // Connect to MongoDB before starting the server
 connectToDatabase().then(() => {
+
+  app.get("/", (req, res)=>{
+    res.json("hello world")
+  });
   // Routes
   app.use("/api/users", userRoutes);
 
