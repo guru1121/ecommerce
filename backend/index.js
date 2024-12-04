@@ -9,7 +9,13 @@ const app = express();
 // const PORT = 5000;
 
 // Middleware
-app.use(cors());
+app.use(cors(
+  {
+    origin:["https://ecommerce-one-pied-62.vercel.app/"],
+    method: ["POST", "GET"],
+    credentials: true
+  }
+));
 app.use(bodyParser.json());
 
 // MongoDB connection using MongoClient
@@ -41,14 +47,14 @@ async function connectToDatabase() {
 connectToDatabase().then(() => {
 
   app.get("/", (req, res)=>{
-    res.json("hello world") 
+    res.send("hello world") 
   });
   // Routes
   app.use("/api/users", userRoutes);
 
   // Start the server
-  app.listen(PORT, () =>
-    console.log(`Server running on http://localhost:${PORT}`)
-  );
+  // app.listen(PORT, () =>
+  //   console.log(`Server running on http://localhost:${PORT}`)
+  // );
 });
 module.exports = (req, res) => app(req, res);
