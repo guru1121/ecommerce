@@ -41,7 +41,7 @@ async function connectToDatabase() {
 connectToDatabase().then(() => {
 
   app.get("/", (req, res)=>{
-    res.json("hello world")
+    res.json("hello world") 
   });
   // Routes
   app.use("/api/users", userRoutes);
