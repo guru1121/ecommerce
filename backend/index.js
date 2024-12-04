@@ -6,7 +6,7 @@ require("dotenv").config();
 const cors = require("cors");
 
 const app = express();
-const PORT = 5000;
+// const PORT = 5000;
 
 // Middleware
 app.use(cors());
@@ -51,3 +51,4 @@ connectToDatabase().then(() => {
     console.log(`Server running on http://localhost:${PORT}`)
   );
 });
+module.exports = (req, res) => app(req, res);
