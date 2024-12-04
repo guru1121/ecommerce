@@ -1,5 +1,5 @@
-import React, { useState, useContext } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useContext, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { ShopContext } from "./ShopContext";
 import logo from "./Assets/logo.png";
 import cart from "./Assets/cart_icon.png";
@@ -10,6 +10,21 @@ function Navbar() {
   const [menu, setMenu] = useState("shop");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { cartItems } = useContext(ShopContext);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const navigate = useNavigate();
+
+  // Check login state on component mount
+  useEffect(() => {
+    const token = localStorage.getItem("authToken");
+    setIsLoggedIn(!!token); // Update logged-in state based on token
+  }, []);
+
+  // Handle logout
+  const handleLogout = () => {
+    localStorage.removeItem("authToken"); // Remove token from storage
+    setIsLoggedIn(false); // Update login state
+    navigate("/"); // Redirect to home
+  };
 
   // Calculate total number of items in the cart
   const totalCartItems = Object.values(cartItems).reduce(
@@ -35,7 +50,10 @@ function Navbar() {
               </Link>
             </div>
             {/* Toggle icon for mobile view */}
-            <div className="menu_icon text-end" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+            <div
+              className="menu_icon text-end"
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+            >
               <img
                 src={isMenuOpen ? closeIcon : menuIcon}
                 alt="menu icon"
@@ -62,11 +80,20 @@ function Navbar() {
                   {menu === "kids" && <hr />}
                 </li>
               </ul>
-              {/* Login and Cart buttons */}
+              {/* Login, Profile, and Cart buttons */}
               <div className="login_cart_div cart_div">
-                <Link to="/login" onClick={() => setIsMenuOpen(false)}>
-                  <button>Login</button>
-                </Link>
+                {isLoggedIn ? (
+                  <>
+                    <Link to="/profile" onClick={() => setIsMenuOpen(false)}>
+                      <button>Profile</button>
+                    </Link>
+                    <button onClick={handleLogout}>Logout</button>
+                  </>
+                ) : (
+                  <Link to="/login" onClick={() => setIsMenuOpen(false)}>
+                    <button>Login</button>
+                  </Link>
+                )}
                 <Link to="/cart" onClick={() => setIsMenuOpen(false)}>
                   <div className="pos-rel">
                     <img src={cart} alt="cart" />

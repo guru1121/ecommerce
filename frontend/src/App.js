@@ -11,6 +11,7 @@ import Footer from './Commponets/Footer';
 import men_banner from './Commponets/Assets/banner_mens.png'
 import women_banner from './Commponets/Assets/banner_women.png'
 import kid_banner from './Commponets/Assets/banner_kids.png'
+import Profile from "./Pages//Profile";
 
 
 function App() {
@@ -28,6 +29,7 @@ function App() {
         </Route>
         <Route path='/cart' element={<Cart/>}/>
         <Route path='/login' element={<LoginSingnup/>}/>
+        <Route path="/profile" element={<Profile />} />
       </Routes>
       <Footer/>
       </BrowserRouter>
