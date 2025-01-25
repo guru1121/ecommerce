@@ -2,7 +2,6 @@ const express = require('express');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const app = express();
-const PORT = 5001;
 
 // Load environment variables
 dotenv.config();
@@ -10,11 +9,11 @@ dotenv.config();
 // Middleware to parse JSON data
 app.use(express.json());
 
-// MongoDB URI from the .env file (no need to modify this if your URI points to the correct cluster)
+// MongoDB URI from the .env file
 const MONGODB_URI = process.env.MONGODB_URI;
 
-// Connect to MongoDB with the specific database (new_db)
-mongoose.connect(`${MONGODB_URI}/new_db`, { useNewUrlParser: true, useUnifiedTopology: true })
+// Connect to MongoDB (the new_db is now included in the URI)
+mongoose.connect(MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log('Connected to MongoDB (new_db)'))
   .catch((error) => console.log('Error connecting to MongoDB:', error));
 
@@ -44,4 +43,5 @@ app.post('/save-user', async (req, res) => {
   }
 });
 
-app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
+// Export the Express app as a Vercel handler
+module.exports = app;
