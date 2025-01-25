@@ -26,8 +26,11 @@ const userSchema = new mongoose.Schema({
 // Create a model for the 'api_data' collection in the 'new_db' database
 const User = mongoose.model('User', userSchema, 'api_data'); // 'api_data' is the collection name
 
+app.use("/", (req, res)=>{
+  res.send("hello world")
+})
 // API route to save username and email
-app.post('/save-user', async (req, res) => {
+app.use('/save-user', async (req, res) => {
   const { username, email } = req.body;
 
   if (!username || !email) {
