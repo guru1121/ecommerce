@@ -9,7 +9,13 @@ dotenv.config();
 
 // Middleware to parse JSON data
 app.use(express.json());
-app.use(cors()); // Enable Cross-Origin Resource Sharing
+app.use(cors(
+  {
+    origin: ["https://ecommerce-2uiv.vercel.app/"],
+    methods: ["POST", "GET"],
+    credentials: true
+  }
+)); // Enable Cross-Origin Resource Sharing
 
 // MongoDB URI from the .env file
 // const MONGODB_URI = process.env.MONGODB_URI;
