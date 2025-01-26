@@ -13,7 +13,7 @@ app.use(cors()); // Enable Cross-Origin Resource Sharing
 
 // MongoDB URI from the .env file
 // const MONGODB_URI = process.env.MONGODB_URI;
-const MONGODB_URI =' process.env.MONGODB_URI';
+const MONGODB_URI = process.env.MONGODB_URI;
 
 
 // Connect to MongoDB
