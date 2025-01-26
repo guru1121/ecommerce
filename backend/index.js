@@ -1,54 +1,46 @@
 const express = require("express");
-const { MongoClient, ServerApiVersion } = require("mongodb");
+const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const userRoutes = require("./routes/userRoutes");
+const { MongoClient } = require("mongodb");
 require("dotenv").config();
 const cors = require("cors");
 
 const app = express();
-const PORT = 5000;
+const PORT = 5001;
 
 // Middleware
 app.use(cors());
+app.use(express.json());
 app.use(bodyParser.json());
 
-// MongoDB connection using MongoClient
-const uri = "mongodb+srv://gurunandmourya:CijbeNuTDeyAm3RV@cluster0.cihi6.mongodb.net/user_db?retryWrites=true&w=majority&appName=Cluster0";
-const client = new MongoClient(uri, {
-  serverApi: {
-    version: ServerApiVersion.v1,
-    strict: true,
-    deprecationErrors: true,
-  },
-});
+// MongoDB connection using Mongoose
+const mongoURI = "mongodb+srv://gurunandmourya:CijbeNuTDeyAm3RV@cluster0.cihi6.mongodb.net/?retryWrites=true&w=majority";
 
+const client = new MongoClient(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true });
 
-async function connectToDatabase() {
-  try {
-    // Connect to MongoDB
-    await client.connect();
+client.connect()
+  .then(() => {
     console.log("Connected to MongoDB!");
 
-    // Pass the MongoDB client to routes if needed
+    // Store the dbClient in app.locals
     app.locals.dbClient = client;
-  } catch (error) {
+
+    // Start the server
+    app.listen(PORT, () => {
+      console.log(`Server running on http://localhost:${PORT}`);
+    });
+  })
+  .catch((error) => {
     console.error("MongoDB connection error:", error);
     process.exit(1); // Exit process if connection fails
-  }
-}
-
-// Connect to MongoDB before starting the server
-connectToDatabase().then(() => {
-
-  app.get("/", (req, res)=>{
-    res.send("hello world") 
   });
-  // Routes
-  app.use("/api/users", userRoutes);
 
-  // Start the server
-  app.listen(PORT, () =>
-    console.log(`Server running on http://localhost:${PORT}`)
-  );
+// Routes
+app.get("/", (req, res) => {
+  res.send("Hello, world!");
 });
+
+app.use("/api/users", userRoutes);
+
 module.exports = app;
