@@ -7,7 +7,7 @@ require("dotenv").config();
 const cors = require("cors");
 
 const app = express();
-const PORT = 5001;
+
 
 // Middleware
 app.use(cors());
@@ -17,30 +17,23 @@ app.use(bodyParser.json());
 // MongoDB connection using Mongoose
 const mongoURI = "mongodb+srv://gurunandmourya:CijbeNuTDeyAm3RV@cluster0.cihi6.mongodb.net/?retryWrites=true&w=majority";
 
-const client = new MongoClient(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose
+  .connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => console.log('Connected to MongoDB'))
+  .catch((error) => console.error('Error connecting to MongoDB:', error));
 
-client.connect()
-  .then(() => {
-    console.log("Connected to MongoDB!");
-
-    // Store the dbClient in app.locals
-    app.locals.dbClient = client;
-
-    // Start the server
-    app.listen(PORT, () => {
-      console.log(`Server running on http://localhost:${PORT}`);
-    });
-  })
-  .catch((error) => {
-    console.error("MongoDB connection error:", error);
-    process.exit(1); // Exit process if connection fails
-  });
 
 // Routes
 app.get("/", (req, res) => {
-  res.send("Hello, world!");
+  res.send("Hello guru 1");
 });
 
 app.use("/api/users", userRoutes);
+
+// Dynamic port for deployment
+const port = process.env.PORT || 3001;
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
+});
 
 module.exports = app;
