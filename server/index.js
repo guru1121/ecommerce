@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
+const cors = require('cors');
 const app = express();
 
 // Load environment variables
@@ -8,14 +9,16 @@ dotenv.config();
 
 // Middleware to parse JSON data
 app.use(express.json());
+app.use(cors()); // Enable Cross-Origin Resource Sharing
 
 // MongoDB URI from the .env file
 const MONGODB_URI = process.env.MONGODB_URI;
 
-// Connect to MongoDB (the new_db is now included in the URI)
-mongoose.connect(MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => console.log('Connected to MongoDB (new_db)'))
-  .catch((error) => console.log('Error connecting to MongoDB:', error));
+// Connect to MongoDB
+mongoose
+  .connect(MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => console.log('Connected to MongoDB'))
+  .catch((error) => console.error('Error connecting to MongoDB:', error));
 
 // Define a schema for user data
 const userSchema = new mongoose.Schema({
@@ -23,14 +26,16 @@ const userSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
 });
 
-// Create a model for the 'api_data' collection in the 'new_db' database
-const User = mongoose.model('User', userSchema, 'api_data'); // 'api_data' is the collection name
+// Create a model for the 'api_data' collection in MongoDB
+const User = mongoose.model('User', userSchema, 'api_data');
 
-app.use("/", (req, res)=>{
-  res.send("hello world")
-})
+// Default route for testing
+app.get('/', (req, res) => {
+  res.send('Hello World');
+});
+
 // API route to save username and email
-app.use('/save-user', async (req, res) => {
+app.post('/save-user', async (req, res) => {
   const { username, email } = req.body;
 
   if (!username || !email) {
@@ -46,5 +51,11 @@ app.use('/save-user', async (req, res) => {
   }
 });
 
-// Export the Express app as a Vercel handler
+// Dynamic port for deployment
+const port = process.env.PORT || 3000;
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
+});
+
+// Export the app for Vercel
 module.exports = app;
