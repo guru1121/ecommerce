@@ -33,7 +33,7 @@ const User = mongoose.model('User', userSchema, 'api_data');
 
 // Default route for testing
 app.get('/', (req, res) => {
-  res.send('Hello World');
+  res.send('Hello World1');
 });
 
 // API route to save username and email
