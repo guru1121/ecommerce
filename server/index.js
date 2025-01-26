@@ -19,7 +19,7 @@ app.use(cors(
 
 // MongoDB URI from the .env file
 // const MONGODB_URI = process.env.MONGODB_URI;
-const MONGODB_URI ='mongodb+srv://guru:OmLmlN739U7p5Bks@guru0.2veuy.mongodb.net/new_db?retryWrites=true&w=majority&appName=guru0';
+const MONGODB_URI ='mongodb://guru:OmLmlN739U7p5Bks@guru0.2veuy.mongodb.net/new_db?retryWrites=true&w=majority&appName=guru0';
 
 
 // Connect to MongoDB
