@@ -38,14 +38,14 @@ app.get('/', (req, res) => {
 
 // API route to save username and email
 app.post('/save-user', async (req, res) => {
-  const { username, email } = req.body;
+  const { username, email, password } = req.body;
 
-  if (!username || !email) {
+  if (!username || !email || !password) {
     return res.status(400).json({ error: 'Username and email are required' });
   }
 
   try {
-    const newUser = new User({ username, email });
+    const newUser = new User({ username, email , password });
     await newUser.save();
     res.status(201).json({ message: 'User saved successfully', user: newUser });
   } catch (error) {
