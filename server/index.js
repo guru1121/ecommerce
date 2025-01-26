@@ -9,18 +9,17 @@ dotenv.config();
 
 // Middleware to parse JSON data
 app.use(express.json());
-app.use(cors(
-  {
+app.use(
+  cors({
     origin: ["https://ecommerce-2uiv.vercel.app/"],
     methods: ["POST", "GET"],
-    credentials: true
-  }
-)); // Enable Cross-Origin Resource Sharing
+    credentials: true,
+  })
+); // Enable Cross-Origin Resource Sharing
 
 // MongoDB URI from the .env file
-// const MONGODB_URI = process.env.MONGODB_URI;
-const MONGODB_URI ='mongodb://guru:OmLmlN739U7p5Bks@guru0.2veuy.mongodb.net/new_db?retryWrites=true&w=majority&appName=guru0';
-
+const MONGODB_URI =
+  'mongodb://guru:OmLmlN739U7p5Bks@guru0.2veuy.mongodb.net/new_db?retryWrites=true&w=majority&appName=guru0';
 
 // Connect to MongoDB
 mongoose
