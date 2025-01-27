@@ -28,7 +28,7 @@ function LoginSignup() {
 
     const url = isLogin
       ? "http://localhost:5000/api/users/login"
-      : "http://localhost:5000/api/users/register";
+      : "https://ecommerce-u3uq.vercel.app/save-user";
 
     setLoading(true);
     try {
